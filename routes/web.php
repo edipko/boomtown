@@ -7,6 +7,10 @@ use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\ContentController;
 
+use App\Http\Controllers\UserController;
+
+// Other routes
+
 
 
 Route::middleware('auth')->group(function () {
@@ -42,6 +46,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/content', [ContentController::class, 'edit'])->name('content.edit');
     Route::post('/content', [ContentController::class, 'update'])->name('content.update');
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    // User Management CRUD Routes
+    Route::resource('users', UserController::class)->except(['show']);
+});
+
 
 
 require __DIR__.'/auth.php';
