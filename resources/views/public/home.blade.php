@@ -77,10 +77,18 @@
             const formData = new FormData(this);
             fetch("{{ route('giglead.store') }}", {
                 method: "POST",
-                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',  // Ensures the server knows we expect JSON
+                },
                 body: formData
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         document.getElementById('gigLeadSuccessMessage').classList.remove('hidden');
@@ -89,6 +97,7 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+
     </script>
 
 @endsection

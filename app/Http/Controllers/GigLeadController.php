@@ -28,6 +28,6 @@ class GigLeadController extends Controller
         //$users = User::all();
         //Notification::send($users, new NewGigLeadNotification($gigLead));
 
-        return redirect()->back()->with('status', 'Your booking request has been received! We will contact you soon.');
+        return response()->json(['success' => true, 'message' => 'Your booking request has been received! We will contact you soon.']);
     }
 }
