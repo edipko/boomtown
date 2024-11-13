@@ -1,14 +1,7 @@
 <?php
-
-// app/Http/Controllers/GigLeadController.php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Models\GigLead;
-use App\Notifications\NewGigLeadNotification;
-use Illuminate\Support\Facades\Notification;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewGigLeadNotification;
 
 class GigLeadController extends Controller
 {
@@ -20,17 +13,17 @@ class GigLeadController extends Controller
             'telephone' => 'required|string|max:20',
         ]);
 
+        // Store gig lead information
         $gigLead = GigLead::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'telephone' => $request->input('telephone'),
         ]);
 
-        $admins = User::where('is_admin', true)->get();
-        Notification::send($admins, new NewGigLeadNotification($gigLead));
+        // Notify all users
+        $users = User::all();
+        Notification::send($users, new NewGigLeadNotification($gigLead));
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('status', 'Your booking request has been received! We will contact you soon.');
     }
-
 }
-
