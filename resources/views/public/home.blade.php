@@ -21,7 +21,7 @@
             </div>
 -->
             <div class="hero-section w-11/12 mx-auto flex items-center justify-center">
-                <img src="{{ asset('images/boomtown_banner_1.png') }}" alt="Boomtown" class="w-full h-auto rounded-lg shadow-lg">
+                <img src="{{ asset('images/boomtown_banner_1_transparent.png') }}" alt="Boomtown" class="w-full h-auto rounded-lg shadow-lg">
             </div>
 
             <!-- About Section -->
