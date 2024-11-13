@@ -1,0 +1,81 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
+# Laravel default files
+/vendor
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/storage/app/public
+/storage/framework/cache/data
+/storage/logs
+/bootstrap/cache
+
+# Laravel environment files
+.env
+.env.*.php
+.env.backup
+.env.local
+.env.local.php
+.env.testing
+
+# IDE and editor files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Composer and NPM dependencies
+composer.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Log and debug files
+*.log
+*.log.*
+*.tsbuildinfo
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.csv
+*.DS_Store
+*.tmp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# User-uploaded files and cache
+/public/uploads
+/storage/debugbar
+/storage/framework/sessions
+/storage/framework/views
+/storage/framework/testing
+/public/uploads/*
+
+# Prevent Git from ignoring these files by untracking all ignored files
+!.gitignore
+
+# Local server files
+homestead.yaml
+Homestead.json
+
+# Docker and CI/CD files (if using Docker or CI/CD setup)
+docker-compose.override.yml
+
