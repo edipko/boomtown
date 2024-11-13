@@ -72,14 +72,12 @@
 
     <script>
         document.getElementById('gigLeadForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent full page reload
+            event.preventDefault();
 
             const formData = new FormData(this);
             fetch("{{ route('giglead.store') }}", {
                 method: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                 body: formData
             })
                 .then(response => response.json())
