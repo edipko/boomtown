@@ -53,15 +53,16 @@
         </div>
 
         <!-- Footer -->
-        <footer class="mt-10 text-center py-6 text-gray-400 text-sm uppercase tracking-widest">
+        <footer class="relative z-20 mt-10 text-center py-6 text-gray-400 text-sm uppercase tracking-widest bg-black">
             <div>
-            <div>&copy; 2024 Boomtown Band. All rights reserved.</div>
-            <div class="space-x-4">
-                <a href="{{ route('privacy') }}" class="hover:text-white">Privacy Policy</a>
-                <a href="{{ route('login') }}" class="hover:text-white">Login</a>
-                <a href="{{ url('/') }}" class="hover:text-white">Home</a>
-            </div>
+                <div>&copy; 2024 Boomtown Band. All rights reserved.</div>
+                <div class="space-x-4">
+                    <a href="{{ route('privacy') }}" class="hover:text-white">Privacy Policy</a>
+                    <a href="{{ route('login') }}" class="hover:text-white">Login</a>
+                    <a href="{{ url('/') }}" class="hover:text-white">Home</a>
+                </div>
             </div>
         </footer>
+
     </div>
 @endsection
