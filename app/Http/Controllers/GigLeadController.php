@@ -1,4 +1,8 @@
 <?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\GigLead;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewGigLeadNotification;
