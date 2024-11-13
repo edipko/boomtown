@@ -28,7 +28,7 @@
             <section class="w-full bg-gradient-to-b from-gray-800 to-gray-900 p-8 rounded-lg shadow-xl">
                 <h2 class="text-3xl font-bold mb-4">About Boomtown</h2>
                 <p class="text-lg">
-                    Boomtown is a high-energy band bringing incredible music to every stage. Known for their captivating performances and tight musicianship, they’ve been rocking audiences for over a decade.
+                    Boomtown is an up-and-coming country band from Western Pennsylvania, known for their high-energy performances and impressive renditions of modern country hits by artists like Morgan Wallen, Chris Stapleton, Luke Combs, and Luke Bryan. With a professional-grade sound reinforcement system and an engaging light show, Boomtown delivers an unforgettable experience at every show. Whether for clubs, private parties, or large outdoor events, this talented band brings the best of today’s country music to life, captivating audiences and keeping the dance floor packed all night long.
                 </p>
             </section>
 
