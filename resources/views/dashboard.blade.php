@@ -10,8 +10,12 @@
             <a href="{{ route('venues.index') }}" class="list-group-item list-group-item-action">
                 Manage Venues
             </a>
-            <a href="{{ route('mailing-list.index') }}" class="list-group-item list-group-item-action">Manage Mailing List</a>
-
+            <a href="{{ route('mailing-list.index') }}" class="list-group-item list-group-item-action">
+                Manage Mailing List
+            </a>
+            <a href="{{ route('content.edit') }}" class="list-group-item list-group-item-action">
+                Manage Website Content
+            </a>
         </div>
     </div>
 @endsection

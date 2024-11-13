@@ -5,6 +5,8 @@ use App\Http\Controllers\VenueController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\MailingListController;
+use App\Http\Controllers\ContentController;
+
 
 
 Route::middleware('auth')->group(function () {
@@ -35,6 +37,11 @@ Route::get('/test-mailing-list', function () {
 
 
 Route::get('/venue/{id}', [App\Http\Controllers\VenueController::class, 'show'])->name('venue.show');
+
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/content', [ContentController::class, 'edit'])->name('content.edit');
+    Route::post('/content', [ContentController::class, 'update'])->name('content.update');
+});
 
 
 require __DIR__.'/auth.php';
