@@ -16,6 +16,7 @@
         </div>
         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
     </form>
+
     <div id="gigLeadSuccessMessage" class="mt-4 text-green-500 hidden">
         Your booking request has been received! We will contact you soon.
     </div>
