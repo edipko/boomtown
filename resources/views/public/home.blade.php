@@ -44,6 +44,10 @@
             </section>
 
 
+            <!-- Book the Band Section -->
+            <x-book-the-band />
+
+
             <!-- Band Profiles Section -->
             <!--<section class="w-full bg-gray-900 p-8 rounded-lg shadow-xl">
                 <h2 class="text-3xl font-bold mb-4">Band Members</h2>
@@ -65,4 +69,28 @@
         </footer>
 
     </div>
+
+    <script>
+        document.getElementById('gigLeadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent full page reload
+
+            const formData = new FormData(this);
+            fetch("{{ route('giglead.store') }}", {
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('gigLeadSuccessMessage').classList.remove('hidden');
+                        document.getElementById('gigLeadForm').reset();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
 @endsection

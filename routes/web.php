@@ -6,12 +6,9 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\ContentController;
-
 use App\Http\Controllers\UserController;
-
-// Other routes
-
-
+use App\Http\Controllers\GigLeadController;
+use App\Http\Controllers\GigLeadAdminController;
 
 Route::middleware('auth')->group(function () {
     Route::resource('venues', VenueController::class);
@@ -53,6 +50,17 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
 });
 
+Route::post('/gig-lead', [GigLeadController::class, 'store'])->name('giglead.store');
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('admin/gigleads', [GigLeadAdminController::class, 'index'])->name('gigleads.index');
+    Route::get('admin/gigleads/{gigLead}/edit', [GigLeadAdminController::class, 'edit'])->name('gigleads.edit');
+    Route::patch('admin/gigleads/{gigLead}', [GigLeadAdminController::class, 'update'])->name('gigleads.update');
+    Route::delete('admin/gigleads/{gigLead}', [GigLeadAdminController::class, 'destroy'])->name('gigleads.destroy');
+});
+
+Route::get('/press-kit', function () {
+    return view('press-kit');
+})->name('press-kit');
 
 
 require __DIR__.'/auth.php';

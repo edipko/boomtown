@@ -31,7 +31,11 @@
                 <label for="telephone" class="form-label">Telephone</label>
                 <input type="text" name="telephone" id="telephone" class="form-control" value="{{ $venue->telephone }}" required>
             </div>
-            <button type="submit" class="btn btn-primary">Update Venue</button>
+
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary">Update Venue</button>
+                <a href="{{ route('venues.index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
 @endsection

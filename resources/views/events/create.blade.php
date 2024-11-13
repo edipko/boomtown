@@ -31,7 +31,11 @@
                 <label for="admission_cost" class="form-label">Admission Cost</label>
                 <input type="number" step="0.01" name="admission_cost" id="admission_cost" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary">Save Event</button>
+
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary">Save Event</button>
+                <a href="{{ route('events.index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
 @endsection
