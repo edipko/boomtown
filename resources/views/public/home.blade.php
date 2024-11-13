@@ -20,8 +20,8 @@
                 </div>
             </div>
 -->
-            <div class="hero-section flex items-center justify-center">
-                <img src="images/boomtown_banner_1.png" alt="Boomtown" class="w-full h-auto max-w-lg md:max-w-xl lg:max-w-2xl">
+            <div class="hero-section w-11/12 mx-auto flex items-center justify-center">
+                <img src="{{ asset('images/boomtown_banner_1.png') }}" alt="Boomtown" class="w-full h-auto rounded-lg shadow-lg">
             </div>
 
             <!-- About Section -->
