@@ -11,12 +11,17 @@
         <div class="relative z-10 flex flex-col items-center space-y-12 pt-10 w-11/12 mx-auto">
 
             <!-- Hero Section with Band Logo or Title -->
-            <div class="w-full h-screen md:h-96 bg-black overflow-hidden rounded-lg shadow-xl relative text-center">
+            <!--<div class="hero-section w-full h-screen md:h-96 bg-black overflow-hidden rounded-lg shadow-xl relative text-center">
                 <img class="w-full h-full object-cover absolute top-0 opacity-50 filter grayscale contrast-200" src="{{ asset('images/boomtown_banner_1.png') }}" alt="Boomtown Band">
+
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <h1 class="text-6xl font-bold uppercase tracking-wider"></h1>
                     <p class="text-xl mt-2"></p>
                 </div>
+            </div>
+-->
+            <div class="hero-section flex items-center justify-center">
+                <img src="images/boomtown_banner_1.png" alt="Boomtown" class="w-full h-auto max-w-lg md:max-w-xl lg:max-w-2xl">
             </div>
 
             <!-- About Section -->

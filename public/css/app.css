@@ -1526,5 +1526,21 @@ select {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
   }
+
+    .hero-section {
+        background-image: url('images/boomtown_banner_1.png'); /* Adjust to your actual image path */
+        background-size: cover; /* Ensures the image covers the container */
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Media query for smaller screens */
+    @media (max-width: 768px) {
+        .hero-section {
+            background-size: contain; /* Prevents the image from cropping on small screens */
+            background-position: center;
+        }
+    }
+
 }
 
