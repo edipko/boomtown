@@ -12,10 +12,10 @@
 
             <!-- Hero Section with Band Logo or Title -->
             <div class="w-full h-screen md:h-96 bg-black overflow-hidden rounded-lg shadow-xl relative text-center">
-                <img class="w-full h-full object-cover absolute top-0 opacity-50 filter grayscale contrast-200" src="{{ asset('images/boomtown-hero.jpg') }}" alt="Boomtown Band">
+                <img class="w-full h-full object-cover absolute top-0 opacity-50 filter grayscale contrast-200" src="{{ asset('images/boomtown_banner_1.png') }}" alt="Boomtown Band">
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <h1 class="text-6xl font-bold uppercase tracking-wider">Boomtown Band</h1>
-                    <p class="text-xl mt-2">2024 Tour</p>
+                    <h1 class="text-6xl font-bold uppercase tracking-wider"></h1>
+                    <p class="text-xl mt-2"></p>
                 </div>
             </div>
 
