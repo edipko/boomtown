@@ -4,22 +4,26 @@
     <!-- Page container with dark background -->
     <div class="relative bg-black text-white min-h-screen">
 
+
         <!-- Background image -->
         <img class="fixed top-0 left-0 h-screen w-full object-cover opacity-75" src="{{ asset('images/boomtown-bg.jpg') }}" alt="Boomtown Background">
+
+        <!-- Social media links -->
+        <div class="absolute top-4 left-4 z-20">
+            <a href="https://www.facebook.com/profile.php?id=61558485951813" target="_blank" class="hover:opacity-80 inline-flex items-center">
+                <img src="{{ asset('images/Facebook_Logo_Primary.png') }}" alt="Facebook" class="w-10 h-10">
+            </a>
+        </div>
+
+
 
         <!-- Main content container with 85% width -->
         <div class="relative z-10 flex flex-col items-center space-y-12 pt-10 w-11/12 mx-auto">
 
-            <!-- Hero Section with Band Logo or Title -->
-            <!--<div class="hero-section w-full h-screen md:h-96 bg-black overflow-hidden rounded-lg shadow-xl relative text-center">
-                <img class="w-full h-full object-cover absolute top-0 opacity-50 filter grayscale contrast-200" src="{{ asset('images/boomtown_banner_1.png') }}" alt="Boomtown Band">
 
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <h1 class="text-6xl font-bold uppercase tracking-wider"></h1>
-                    <p class="text-xl mt-2"></p>
-                </div>
-            </div>
--->
+
+
+            <!-- Hero Section with Band Logo or Title -->
             <div class="hero-section w-11/12 mx-auto flex items-center justify-center">
                 <img src="{{ asset('images/boomtown_banner_1_transparent.png') }}" alt="Boomtown" class="w-full h-auto rounded-lg shadow-lg">
             </div>
