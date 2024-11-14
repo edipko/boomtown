@@ -11,9 +11,10 @@
         <!-- Social media links -->
         <div class="absolute top-4 left-4 z-20">
             <a href="https://www.facebook.com/profile.php?id=61558485951813" target="_blank" class="hover:opacity-80 inline-flex items-center">
-                <img src="{{ asset('images/Facebook_Logo_Primary.png') }}" alt="Facebook" class="w-8 h-8">
+                <img src="{{ asset('images/Facebook_Logo_Primary.png') }}" alt="Facebook" class="w-8 sm:w-10 md:w-12 lg:w-14 xl:w-16 h-auto">
             </a>
         </div>
+
 
 
 
