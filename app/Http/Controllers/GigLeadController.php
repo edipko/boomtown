@@ -26,9 +26,9 @@ class GigLeadController extends Controller
         ]);
 
         // Retrieve all users (administrators)
-        $administrators = User::all();
-        $administrators = User::where('id', '==', '1')->get();
-
+        //$administrators = User::all();
+        //$administrators = User::where('id', '==', '1')->get();
+        $administrators = User::find(1);
 
         // Debugging: Log all users retrieved from the database
         Log::info('Administrators for notification:', $administrators->toArray());
