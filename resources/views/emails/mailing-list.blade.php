@@ -6,7 +6,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #000;
-            color: #fff;
+            color: #fff; /* Ensure text is white */
             margin: 0;
             padding: 0;
         }
@@ -30,15 +30,17 @@
         .content {
             text-align: left;
             margin-bottom: 20px;
+            color: #fff; /* Ensure text is white */
         }
         .content p {
             font-size: 16px;
             line-height: 1.6;
+            color: #fff; /* Ensure paragraph text is white */
         }
         .cta {
             display: inline-block;
             background-color: #ff4500;
-            color: #fff;
+            color: #fff; /* Ensure button text is white */
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -71,8 +73,7 @@
     <!-- Call-to-Action Section -->
     <div class="content">
         <p>
-            If you no longer wish to receive these emails, you can
-            <a href="{{ $unsubscribeUrl }}" class="cta">Unsubscribe</a>.
+            <a href="{{ $unsubscribeUrl }}" class="cta">Unsubscribe</a>
         </p>
     </div>
 
