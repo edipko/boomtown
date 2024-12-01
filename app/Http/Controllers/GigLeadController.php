@@ -25,7 +25,7 @@ class GigLeadController extends Controller
         ]);
 
         // Notify administrators via SendGrid
-        $administrators = User::where('is', '==', '1')->get();
+        $administrators = User::where('id', '==', '1')->get();
 
         foreach ($administrators as $admin) {
             $this->sendEmailNotification($admin->email, $gigLead);
