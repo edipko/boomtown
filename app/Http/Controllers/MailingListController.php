@@ -58,7 +58,7 @@ class MailingListController extends Controller
                 ],
             ],
             'from' => [
-                'email' => 'website@boomtownpa.com', // Replace with your verified "from" email
+                'email' => 'shout@boomtownpa.com', // Replace with your verified "from" email
                 'name' => 'Boomtown Mailing List',
             ],
             'content' => [
