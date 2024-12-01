@@ -57,7 +57,7 @@ class GigLeadController extends Controller
                 ],
             ],
             'from' => [
-                'email' => 'no-reply@yourdomain.com',
+                'email' => 'ernie.dipko@gmail.com',
                 'name' => 'Boomtown Notifications',
             ],
             'content' => [
