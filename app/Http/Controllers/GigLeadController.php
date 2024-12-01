@@ -68,8 +68,8 @@ class GigLeadController extends Controller
                     'value' => "A new gig lead has been received:\n\n" .
                         "Name: {$gigLead->name}\n" .
                         "Email: {$gigLead->email}\n" .
-                        "Telephone: {$gigLead->telephone}\n",
-                        "Event Information: {$gigLead->event_information}\n",
+                        "Telephone: {$gigLead->telephone}\n" .
+                        "Event Information: {$gigLead->event_information}\n"
                 ],
             ],
         ]);
