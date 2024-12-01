@@ -25,12 +25,10 @@ class GigLeadController extends Controller
             'telephone' => $request->input('telephone'),
         ]);
 
-        // Retrieve all users (administrators)
-        //$administrators = User::all();
-        //$administrators = User::where('id', '==', '1')->get();
-        $administrators = User::find(1);
+        // Retrieve only the user with id=1
+        $administrators = User::where('id', 1)->get();
 
-        // Debugging: Log all users retrieved from the database
+        // Debugging: Log the administrators retrieved
         Log::info('Administrators for notification:', $administrators->toArray());
 
         // Notify administrators via SendGrid
@@ -85,3 +83,6 @@ class GigLeadController extends Controller
         }
     }
 }
+
+
+?>
