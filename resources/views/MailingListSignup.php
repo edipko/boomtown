@@ -18,7 +18,10 @@ class MailingListSignup extends Component
 
     public function submit()
     {
-        $this->validate();
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:mailing_lists',
+        ]);
 
         MailingList::create([
             'name' => $this->name,
