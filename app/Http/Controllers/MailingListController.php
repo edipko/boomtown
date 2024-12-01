@@ -43,6 +43,12 @@ class MailingListController extends Controller
     private function sendEmailUsingSendGrid($email, $subject, $messageBody)
     {
         $user = MailingList::where('email', $email)->first();
+
+        if (!$user || !$user->unsubscribe_token) {
+            Log::warning("Failed to generate unsubscribe link. Missing user or token for email: $email");
+            return;
+        }
+
         $unsubscribeUrl = route('mailing-list.unsubscribe', ['token' => $user->unsubscribe_token]);
 
         $messageBody .= "\n\nIf you no longer wish to receive these emails, click here to unsubscribe: $unsubscribeUrl";
@@ -63,7 +69,7 @@ class MailingListController extends Controller
                 ],
             ],
             'from' => [
-                'email' => 'verified@example.com', // Replace with your verified "from" email
+                'email' => 'shout@boomtownpa.com', // Replace with your verified "from" email
                 'name' => 'Boomtown Mailing List',
             ],
             'content' => [
@@ -86,6 +92,7 @@ class MailingListController extends Controller
         }
     }
 
+
     public function unsubscribe($token)
     {
         $user = MailingList::where('unsubscribe_token', $token)->first();
@@ -98,6 +105,7 @@ class MailingListController extends Controller
 
         return redirect('/')->with('success', 'You have been unsubscribed from the mailing list.');
     }
+
 
 
 }
