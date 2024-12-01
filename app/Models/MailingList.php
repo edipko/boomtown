@@ -10,7 +10,7 @@ class MailingList extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['email', 'unsubscribe_token'];
+    protected $fillable = ['name', 'email', 'unsubscribe_token']; // Include 'name'
 
     protected static function booted()
     {
@@ -19,6 +19,7 @@ class MailingList extends Model
         });
     }
 }
+
 
 ?>
 
