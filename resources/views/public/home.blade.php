@@ -5,12 +5,16 @@
     <div class="relative bg-black text-white min-h-screen">
 
 
+    @php
+        $facebookLink = App\Models\WebsiteData::where('section', 'facebook_link')->value('content');
+    @endphp
+
         <!-- Background image -->
         <img class="fixed top-0 left-0 h-screen w-full object-cover opacity-75" src="{{ asset('images/boomtown-bg.jpg') }}" alt="Boomtown Background">
 
         <!-- Social media links -->
         <div class="absolute top-4 left-4 z-20">
-            <a href="https://www.facebook.com/profile.php?id=61558485951813" target="_blank" class="hover:opacity-80 inline-flex items-center">
+            <a href="{{ $facebookLink }}" target="_blank" class="hover:opacity-80 inline-flex items-center">
                 <img src="{{ asset('images/Facebook_Logo_Primary.png') }}" alt="Facebook" class="w-8 sm:w-10 md:w-12 lg:w-14 xl:w-16 h-auto">
             </a>
         </div>
