@@ -40,12 +40,13 @@
         .cta {
             display: inline-block;
             background-color: #007bff; /* Blue button */
-            color: #fff; /* White text */
+            color: #fff !important; /* Ensure button text is white */
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
-            margin: 20px auto;
+            margin-top: 20px;
             text-align: center;
+            font-weight: bold;
         }
         .footer {
             text-align: center;
