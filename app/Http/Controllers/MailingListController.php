@@ -74,10 +74,14 @@ class MailingListController extends Controller
             ],
             'content' => [
                 [
-                    'type' => 'text/plain',
-                    'value' => $messageBody,
+                    'type' => 'text/html',
+                    'value' => view('emails.mailing-list', [
+                        'messageBody' => $messageBody,
+                        'unsubscribeUrl' => $unsubscribeUrl
+                    ])->render(),
                 ],
             ],
+
         ]);
 
         if (!$response->successful()) {
