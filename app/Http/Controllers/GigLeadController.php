@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\GigLead;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GigLeadController extends Controller
 {
@@ -24,9 +25,15 @@ class GigLeadController extends Controller
             'telephone' => $request->input('telephone'),
         ]);
 
-        // Notify administrators via SendGrid
+        // Retrieve all users (administrators)
+        $administrators = User::all();
         $administrators = User::where('id', '==', '1')->get();
 
+
+        // Debugging: Log all users retrieved from the database
+        Log::info('Administrators for notification:', $administrators->toArray());
+
+        // Notify administrators via SendGrid
         foreach ($administrators as $admin) {
             $this->sendEmailNotification($admin->email, $gigLead);
         }
@@ -67,9 +74,13 @@ class GigLeadController extends Controller
         ]);
 
         if (!$response->successful()) {
-            \Log::error('Failed to send email notification via SendGrid', [
+            Log::error('Failed to send email notification via SendGrid', [
                 'email' => $email,
                 'response' => $response->body(),
+            ]);
+        } else {
+            Log::info('Email sent successfully via SendGrid', [
+                'email' => $email,
             ]);
         }
     }
