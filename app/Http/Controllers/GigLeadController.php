@@ -16,6 +16,7 @@ class GigLeadController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'telephone' => 'required|string|max:20',
+            'event_information' => 'nullable|string',
         ]);
 
         // Store gig lead information
@@ -23,6 +24,7 @@ class GigLeadController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'telephone' => $request->input('telephone'),
+            'event_information' => $request->input('event_information'),
         ]);
 
         // Retrieve only the user with id=1

@@ -10,6 +10,7 @@ class GigLead extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'telephone', 'notes', 'followed_up'
+        'name', 'email', 'telephone', 'event_information', 'notes', 'followed_up'
     ];
+
 }
