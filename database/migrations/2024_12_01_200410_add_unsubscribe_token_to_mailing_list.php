@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('mailing_list', function (Blueprint $table) {
+        Schema::table('mailing_lists', function (Blueprint $table) {
             $table->string('unsubscribe_token')->unique()->nullable();
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('mailing_list', function (Blueprint $table) {
+        Schema::table('mailing_lists', function (Blueprint $table) {
             $table->dropColumn('unsubscribe_token');
         });
     }
