@@ -103,8 +103,10 @@ class MailingListController extends Controller
 
         $user->delete();
 
-        return redirect('/')->with('success', 'You have been unsubscribed from the mailing list.');
+        return redirect()->route('unsubscribe.success');
     }
+
+
 
 
 

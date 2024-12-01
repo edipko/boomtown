@@ -64,5 +64,8 @@ Route::get('/press-kit', function () {
 
 Route::get('/unsubscribe/{token}', [MailingListController::class, 'unsubscribe'])->name('mailing-list.unsubscribe');
 
+Route::get('/unsubscribe-success', function () {
+    return view('unsubscribe-success');
+})->name('unsubscribe.success');
 
 require __DIR__.'/auth.php';
