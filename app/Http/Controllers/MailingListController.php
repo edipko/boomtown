@@ -51,8 +51,6 @@ class MailingListController extends Controller
 
         $unsubscribeUrl = route('mailing-list.unsubscribe', ['token' => $user->unsubscribe_token]);
 
-        $messageBody .= "\n\nIf you no longer wish to receive these emails, click here to unsubscribe: $unsubscribeUrl";
-
         $sendGridApiKey = env('SENDGRID_API_KEY');
         $sendGridUrl = 'https://api.sendgrid.com/v3/mail/send';
 
