@@ -39,12 +39,13 @@
         }
         .cta {
             display: inline-block;
-            background-color: #ff4500;
-            color: #fff; /* Ensure button text is white */
+            background-color: #007bff; /* Blue button */
+            color: #fff; /* White text */
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
-            margin-top: 20px;
+            margin: 20px auto;
+            text-align: center;
         }
         .footer {
             text-align: center;
@@ -53,7 +54,7 @@
             color: #bbb;
         }
         .footer a {
-            color: #ff4500;
+            color: #007bff; /* Blue link */
             text-decoration: none;
         }
     </style>
@@ -67,11 +68,14 @@
 
     <!-- Content Section -->
     <div class="content">
-        <p>{{ $messageBody }}</p>
+        <p>
+            <!-- Handle line breaks in the message body -->
+            {!! nl2br(e($messageBody)) !!}
+        </p>
     </div>
 
     <!-- Call-to-Action Section -->
-    <div class="content">
+    <div class="content" style="text-align: center;">
         <p>
             <a href="{{ $unsubscribeUrl }}" class="cta">Unsubscribe</a>
         </p>
