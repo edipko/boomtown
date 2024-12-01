@@ -11,8 +11,8 @@
         </div>
     @endif
 
-    <form id="gigLeadForm" method="POST" action="{{ route('gigLead.store') }}">
-        @csrf
+    <form id="gigLeadForm" method="POST" action="{{ route('giglead.store') }}">
+    @csrf
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-white">Name</label>
             <input type="text" id="name" name="name" value="{{ old('name') }}" required
