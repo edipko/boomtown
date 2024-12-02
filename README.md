@@ -1,64 +1,235 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel Application Deployment Instructions
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
+This guide outlines the steps to deploy a Laravel application on an Amazon Linux 2023 instance with Nginx and MariaDB. It ensures proper initialization, installation of dependencies, and configuration for the Laravel application.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Prerequisites
+1. **Amazon Linux 2023 Instance**:
+    - Ensure the EC2 instance is running Amazon Linux 2023.
+    - Attach a security group that allows access to HTTP (port 80), HTTPS (port 443), and SSH (port 22).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. **Domain Configuration**:
+    - Point the domain’s DNS to the public IP of the EC2 instance.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. **Access**:
+    - SSH into the instance using the appropriate key pair.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Deployment Steps
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Step 1: Update System Packages
+```bash
+sudo yum update -y
+```
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Step 2: Install Required Software
 
-### Premium Partners
+#### Install Nginx
+```bash
+sudo amazon-linux-extras enable nginx1
+sudo yum install nginx -y
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+#### Install PHP and Extensions
+```bash
+sudo amazon-linux-extras enable php8.2
+sudo yum install php php-cli php-mbstring php-xml php-common php-mysqlnd php-curl php-bcmath unzip -y
+```
 
-## Contributing
+#### Install MariaDB Server
+```bash
+sudo yum install mariadb-server -y
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+### Step 3: Configure Database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Secure MariaDB Installation
+```bash
+sudo mysql_secure_installation
+```
+- Set the root password.
+- Remove anonymous users.
+- Disallow remote root login.
+- Remove the test database.
 
-## Security Vulnerabilities
+#### Create Database and User
+```bash
+sudo mysql -u root -p
+```
+Run the following SQL commands:
+```sql
+CREATE DATABASE boomtown;
+CREATE USER 'boomtown_user'@'localhost' IDENTIFIED BY 'secure_password';
+GRANT ALL PRIVILEGES ON boomtown.* TO 'boomtown_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+### Step 4: Initialize Laravel Application
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Define Installation Path Variable
+```bash
+export LARAVEL_PATH=/var/www/html/boomtown2
+```
+
+#### Create Laravel Base Structure
+Run the following commands to initialize the Laravel project structure:
+```bash
+mkdir -p $LARAVEL_PATH/storage/framework/cache
+mkdir -p $LARAVEL_PATH/storage/framework/views
+mkdir -p $LARAVEL_PATH/storage/framework/sessions
+```
+
+#### Upload Custom Files
+1. Upload the `final_custom_files_with_db.zip` to the server.
+2. SSH into the server and extract the files:
+   ```bash
+   unzip final_custom_files_with_db.zip -d $LARAVEL_PATH
+   ```
+
+#### Set Permissions
+```bash
+sudo chmod -R 775 $LARAVEL_PATH/storage $LARAVEL_PATH/bootstrap/cache
+sudo chown -R nginx:nginx $LARAVEL_PATH
+```
+
+#### Install Composer
+```bash
+cd $LARAVEL_PATH
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+composer install
+```
+
+---
+
+### Step 5: Configure Environment
+
+#### Copy `.env` File
+```bash
+cp $LARAVEL_PATH/.env.example $LARAVEL_PATH/.env
+```
+
+#### Update Database Credentials
+```env
+DB_DATABASE=boomtown
+DB_USERNAME=boomtown_user
+DB_PASSWORD=secure_password
+```
+
+#### Generate Application Key
+```bash
+php artisan key:generate
+```
+
+---
+
+### Step 6: Run Migrations and Seeders
+```bash
+php artisan migrate --seed
+```
+
+---
+
+### Step 7: Configure Nginx
+
+#### Create Nginx Configuration File
+```bash
+sudo nano /etc/nginx/conf.d/boomtown.conf
+```
+Add the following configuration:
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+    root $LARAVEL_PATH/public;
+
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt)$ {
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+}
+```
+
+#### Restart Nginx
+```bash
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+```
+
+---
+
+### Step 8: Test the Application
+1. Open a browser and navigate to your domain (e.g., `http://yourdomain.com`).
+2. Verify the Laravel site is working correctly.
+
+---
+
+### Optional: Set Up HTTPS with Certbot
+
+#### Install Certbot
+```bash
+sudo yum install certbot python3-certbot-nginx -y
+```
+
+#### Obtain SSL Certificate
+```bash
+sudo certbot --nginx -d yourdomain.com
+```
+
+#### Test Certificate Renewal
+```bash
+sudo certbot renew --dry-run
+```
+
+---
+
+## Maintenance Commands
+
+- **Clear Cache**:
+  ```bash
+  php artisan cache:clear
+  php artisan config:clear
+  php artisan route:clear
+  ```
+
+- **Restart Services**:
+  ```bash
+  sudo systemctl restart nginx
+  sudo systemctl restart php-fpm
+  ```
+
+---
+
+## Notes
+
+- Always ensure that your `.env` file contains accurate credentials and configurations.
+- Keep the server updated and secure by regularly applying system updates and patches.
+
+With these steps, your Laravel application should be fully deployed and operational.
+
