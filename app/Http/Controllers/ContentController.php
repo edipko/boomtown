@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 
 class ContentController extends Controller
 {
+
+    public function edit()
+    {
+        // Fetch current values for the content sections
+        $aboutContent = WebsiteData::where('section', 'about')->first();
+        $facebookLink = WebsiteData::where('section', 'facebook_link')->first();
+
+        return view('admin.content-edit', compact('aboutContent', 'facebookLink'));
+    }
+
+
     public function update(Request $request)
     {
         // Validate input
