@@ -21,6 +21,8 @@ class MailingListSignup extends Component
     public function submit()
     {
         logger('Livewire submit method triggered.'); // Logs to Laravel's log file
+        logger('Inserted Data:', ['recaptchaToken' => $this->recaptchaToken]);
+
         $this->validate();
 
         // Optionally verify the reCAPTCHA score server-side if necessary
@@ -30,6 +32,8 @@ class MailingListSignup extends Component
             'name' => $this->name,
             'email' => $this->email,
         ]);
+
+        logger('Inserted Data:', ['name' => $this->name, 'email' => $this->email]);
 
         $this->successMessage = 'Thank you for joining our mailing list!';
         $this->reset(['name', 'email', 'recaptchaToken']);
