@@ -34,13 +34,19 @@
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
 <script>
     document.getElementById('signup-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent the form from submitting immediately
-        grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function(token) {
-            // Assign the token to the hidden input field
-            document.getElementById('recaptcha-token').value = token;
+        e.preventDefault();
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function(token) {
+                console.log('Generated reCAPTCHA token:', token); // Debugging token
+                document.getElementById('recaptcha-token').value = token;
 
-            // Manually trigger Livewire submission
-            @this.call('submit');
+                // Trigger Livewire submission
+                @this.set('recaptchaToken', token); // Explicitly set the token in Livewire
+                @this.call('submit');
+            }).catch(function(error) {
+                console.error('reCAPTCHA error:', error);
+            });
         });
     });
+
 </script>
