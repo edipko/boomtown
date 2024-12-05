@@ -11,38 +11,75 @@
         </div>
     @endif
 
-    <form id="gigLeadForm" method="POST" action="{{ route('giglead.store') }}">
-    @csrf
-        <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-white">Name</label>
-            <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                   class="mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600"
-                   placeholder="Your Name">
+    <form id="gigLeadForm">
+        @csrf
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
         </div>
-        <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-white">Email</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                   class="mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600"
-                   placeholder="Your Email">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
         </div>
-        <div class="mb-4">
-            <label for="telephone" class="block text-sm font-medium text-white">Telephone</label>
-            <input type="text" id="telephone" name="telephone" value="{{ old('telephone') }}" required
-                   class="mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600"
-                   placeholder="Your Telephone">
+        <div>
+            <label for="telephone">Telephone:</label>
+            <input type="text" name="telephone" id="telephone" required>
         </div>
-        <div class="mb-4">
-            <label for="event_information" class="block text-sm font-medium text-white">Event Information</label>
-            <textarea id="event_information" name="event_information"
-                      class="mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600"
-                      placeholder="Details about your event...">{{ old('event_information') }}</textarea>
+        <div>
+            <label for="event_information">Event Information:</label>
+            <textarea name="event_information" id="event_information"></textarea>
         </div>
-        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+
+        <!-- Hidden reCAPTCHA Token Field -->
+        <input type="hidden" id="recaptcha-token" name="recaptchaToken">
+
+        <button type="submit">Submit</button>
     </form>
 
-    <div id="gigLeadSuccessMessage" class="mt-4 text-green-500 hidden">
-        Your booking request has been received! We will contact you soon.
+    <div id="gigLeadSuccessMessage" class="hidden">
+        Thank you for your inquiry! We'll get back to you soon.
     </div>
+
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
+    <script>
+        document.getElementById('gigLeadForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            grecaptcha.ready(function () {
+                grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
+                    // Attach the token to the hidden input field
+                    document.getElementById('recaptcha-token').value = token;
+
+                    // Submit the form via AJAX
+                    const formData = new FormData(document.getElementById('gigLeadForm'));
+
+                    fetch("{{ route('giglead.store') }}", {
+                        method: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                        body: formData,
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById('gigLeadSuccessMessage').classList.remove('hidden');
+                                document.getElementById('gigLeadForm').reset();
+                            } else {
+                                console.error('Submission error:', data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+    </script>
 
     <div class="mt-4">
         <a href="{{ route('press-kit') }}" class="text-blue-400 underline">View Digital Press Kit</a>
