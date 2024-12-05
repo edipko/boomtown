@@ -79,7 +79,7 @@
 
     </div>
 
-    <script>
+   <!-- <script>
         document.getElementById('gigLeadForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -115,5 +115,6 @@
         });
 
     </script>
+    -->
 
 @endsection
