@@ -63,10 +63,22 @@
         grecaptcha.ready(function () {
             grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
                 console.log('Generated reCAPTCHA token:', token); // Debugging token
+
+                if (!token) {
+                    console.error('Failed to generate reCAPTCHA token.');
+                    alert('Error: Could not generate reCAPTCHA token. Please try again.');
+                    return;
+                }
+
                 document.getElementById('recaptcha-token').value = token;
-                event.target.submit(); // Submit the form after setting the token
+
+                // Submit the form after setting the token
+                event.target.submit();
+            }).catch(function (error) {
+                console.error('reCAPTCHA Error:', error);
+                alert('Error generating reCAPTCHA. Please try again.');
             });
         });
-
     });
+
 </script>
