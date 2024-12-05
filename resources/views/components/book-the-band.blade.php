@@ -57,56 +57,67 @@
 
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
 <script>
-    document.getElementById('gigLeadForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission
+    document.querySelectorAll('form').forEach((form) => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
 
-        grecaptcha.ready(async function () {
-            try {
-                // Generate the reCAPTCHA token
-                const token = await grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' });
-                console.log('Generated reCAPTCHA token:', token);
-
-                if (!token) {
-                    alert('Error: Could not generate reCAPTCHA token. Please try again.');
-                    return;
-                }
-
-                // Set the token in the hidden input field
-                document.getElementById('recaptcha-token').value = token;
-
-                // Use the fetch API for form submission
-                const formData = new FormData(document.getElementById('gigLeadForm'));
-
-                // Debug the form data before sending
-                console.log('Form Data Before Submission:', Array.from(formData.entries()));
-
-                const response = await fetch("{{ route('giglead.store') }}", {
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Validation Errors:', errorData.errors);
-                    alert('Validation Error: ' + JSON.stringify(errorData.errors));
-                    return;
-                }
-
-                const responseData = await response.json();
-                console.log('Server Response:', responseData);
-
-                if (responseData.success) {
-                    alert('Your booking request has been received!');
-                    document.getElementById('gigLeadForm').reset();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form. Please try again.');
+            const recaptchaInput = form.querySelector('input[name="recaptchaToken"]');
+            if (!recaptchaInput) {
+                console.error('Hidden input field for recaptchaToken not found in this form!');
+                return;
             }
+
+            grecaptcha.ready(async function () {
+                try {
+                    // Generate the reCAPTCHA token
+                    const token = await grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' });
+                    console.log('Generated reCAPTCHA token:', token);
+
+                    if (!token) {
+                        alert('Error: Could not generate reCAPTCHA token. Please try again.');
+                        return;
+                    }
+
+                    // Set the token in the hidden input field of the specific form
+                    recaptchaInput.value = token;
+
+                    // Debugging: Ensure token is set correctly
+                    console.log('recaptchaToken set in the form:', recaptchaInput.value);
+
+                    // Use fetch API to submit the form
+                    const formData = new FormData(form);
+
+                    // Log the form data for debugging
+                    console.log('Form Data Before Submission:', Array.from(formData.entries()));
+
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Validation Errors:', errorData.errors);
+                        alert('Validation Error: ' + JSON.stringify(errorData.errors));
+                        return;
+                    }
+
+                    const responseData = await response.json();
+                    console.log('Server Response:', responseData);
+
+                    if (responseData.success) {
+                        alert('Your submission was successful!');
+                        form.reset();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the form. Please try again.');
+                }
+            });
         });
     });
 
