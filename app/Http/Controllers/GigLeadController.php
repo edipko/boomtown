@@ -11,6 +11,9 @@ class GigLeadController extends Controller
 {
     public function store(Request $request)
     {
+        // Log the incoming request data
+        Log::info('Request Data:', $request->all());
+
         // Validate the request data
         $request->validate([
             'name' => 'required|string|max:255',
