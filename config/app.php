@@ -13,7 +13,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'BoomTown'),
+
+    'recaptcha_site_key' => env('RECAPTCHA_SITE_KEY'),
 
     /*
     |--------------------------------------------------------------------------
