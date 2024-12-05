@@ -92,13 +92,17 @@
                 method: "POST",
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',  // Ensures the server knows we expect JSON
+                    'Accept': 'application/json',
                 },
-                body: formData
+                body: formData,
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        return response.json().then(err => {
+                            console.error('Validation Errors:', err.errors); // Log validation errors
+                            alert('Form submission failed. Please check your input.');
+                            throw new Error('Validation failed');
+                        });
                     }
                     return response.json();
                 })
@@ -109,6 +113,7 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
+
         });
 
     </script>
