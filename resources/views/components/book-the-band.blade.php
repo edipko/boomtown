@@ -11,8 +11,14 @@
         </div>
     @endif
 
+    @if (session('success'))
+        <div class="mt-4 text-green-500">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form id="gigLeadForm" method="POST" action="{{ route('giglead.store') }}">
-    @csrf
+        @csrf
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-white">Name</label>
             <input type="text" id="name" name="name" value="{{ old('name') }}" required
@@ -44,10 +50,6 @@
         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
     </form>
 
-    <div id="gigLeadSuccessMessage" class="mt-4 text-green-500 hidden">
-        Your booking request has been received! We will contact you soon.
-    </div>
-
     <div class="mt-4">
         <a href="{{ route('press-kit') }}" class="text-blue-400 underline">View Digital Press Kit</a>
     </div>
@@ -60,13 +62,9 @@
 
         grecaptcha.ready(function () {
             grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
-                // Attach the token to the hidden input field
                 document.getElementById('recaptcha-token').value = token;
-
-                // Submit the form
-                event.target.submit();
+                event.target.submit(); // Submit the form after setting the token
             });
         });
     });
 </script>
-
