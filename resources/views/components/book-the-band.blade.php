@@ -19,6 +19,7 @@
 
     <form id="gigLeadForm" method="POST" action="{{ route('giglead.store') }}">
         @csrf
+        <div class="status-message mb-4"></div>
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-white">Name</label>
             <input type="text" id="name" name="name" value="{{ old('name') }}" required
@@ -43,10 +44,7 @@
                       class="mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600"
                       placeholder="Details about your event...">{{ old('event_information') }}</textarea>
         </div>
-
-        <!-- Hidden reCAPTCHA Token Field -->
         <input type="hidden" id="recaptcha-token" name="recaptchaToken">
-
         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
     </form>
 
@@ -62,6 +60,7 @@
             event.preventDefault(); // Prevent default form submission
 
             const recaptchaInput = form.querySelector('input[name="recaptchaToken"]');
+            const statusMessageContainer = form.querySelector('.status-message');
             if (!recaptchaInput) {
                 console.error('Hidden input field for recaptchaToken not found in this form!');
                 return;
@@ -69,20 +68,26 @@
 
             grecaptcha.ready(async function () {
                 try {
+                    // Clear any existing messages
+                    if (statusMessageContainer) {
+                        statusMessageContainer.innerHTML = '';
+                        statusMessageContainer.classList.remove('text-green-500', 'text-red-500');
+                    }
+
                     // Generate the reCAPTCHA token
                     const token = await grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' });
                     console.log('Generated reCAPTCHA token:', token);
 
                     if (!token) {
-                        alert('Error: Could not generate reCAPTCHA token. Please try again.');
+                        if (statusMessageContainer) {
+                            statusMessageContainer.textContent = 'Error: Could not generate reCAPTCHA token. Please try again.';
+                            statusMessageContainer.classList.add('text-red-500');
+                        }
                         return;
                     }
 
-                    // Set the token in the hidden input field of the specific form
+                    // Set the token in the hidden input field
                     recaptchaInput.value = token;
-
-                    // Debugging: Ensure token is set correctly
-                    console.log('recaptchaToken set in the form:', recaptchaInput.value);
 
                     // Use fetch API to submit the form
                     const formData = new FormData(form);
@@ -102,7 +107,10 @@
                     if (!response.ok) {
                         const errorData = await response.json();
                         console.error('Validation Errors:', errorData.errors);
-                        alert('Validation Error: ' + JSON.stringify(errorData.errors));
+                        if (statusMessageContainer) {
+                            statusMessageContainer.textContent = `Validation Error: ${Object.values(errorData.errors).join(', ')}`;
+                            statusMessageContainer.classList.add('text-red-500');
+                        }
                         return;
                     }
 
@@ -110,12 +118,18 @@
                     console.log('Server Response:', responseData);
 
                     if (responseData.success) {
-                        alert('Your submission was successful!');
+                        if (statusMessageContainer) {
+                            statusMessageContainer.textContent = responseData.message || 'Submission successful!';
+                            statusMessageContainer.classList.add('text-green-500');
+                        }
                         form.reset();
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('An error occurred while submitting the form. Please try again.');
+                    if (statusMessageContainer) {
+                        statusMessageContainer.textContent = 'An error occurred while submitting the form. Please try again.';
+                        statusMessageContainer.classList.add('text-red-500');
+                    }
                 }
             });
         });
