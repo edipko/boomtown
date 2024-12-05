@@ -12,7 +12,7 @@
             <div class="bg-green-500 text-white p-3 rounded mb-4">{{ $successMessage }}</div>
         @endif
 
-        <form wire:submit.prevent="submit">
+        <form id="signup-form">
             <div class="mb-4">
                 <input type="text" wire:model="name" placeholder="Full Name" class="w-full p-3 rounded focus:outline-none text-gray-900 placeholder-gray-400" />
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
@@ -23,7 +23,24 @@
                 @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
-            <button type="submit" class="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded font-semibold">Sign Up</button>
+            <!-- Hidden field for reCAPTCHA token -->
+            <input type="hidden" id="recaptcha-token" wire:model="recaptchaToken">
+
+            <button type="submit" id="submit-button" class="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded font-semibold">Sign Up</button>
         </form>
     </div>
 </div>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
+<script>
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the form from submitting immediately
+        grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function(token) {
+            // Assign the token to the hidden input field
+            document.getElementById('recaptcha-token').value = token;
+
+            // Manually trigger Livewire submission
+            @this.call('submit');
+        });
+    });
+</script>
