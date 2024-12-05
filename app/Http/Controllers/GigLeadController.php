@@ -17,8 +17,9 @@ class GigLeadController extends Controller
             'email' => 'required|email',
             'telephone' => 'required|string|max:20',
             'event_information' => 'nullable|string',
-            'recaptchaToken' => 'required', // Ensure a token is provided
+            'recaptchaToken' => 'required', // This must be provided
         ]);
+
 
         // Store gig lead information
         $gigLead = GigLead::create([

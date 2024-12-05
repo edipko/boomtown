@@ -83,6 +83,10 @@
         document.getElementById('gigLeadForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
+            grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
+                document.getElementById('recaptcha-token').value = token;
+            });
+
             const formData = new FormData(this);
             fetch("{{ route('giglead.store') }}", {
                 method: "POST",
