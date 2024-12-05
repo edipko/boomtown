@@ -97,7 +97,7 @@
                     if (!response.ok) {
                         return response.json().then(err => {
                             console.error('Validation Errors:', err.errors); // Log validation errors
-                            alert('Form submission failed. Please check your input.');
+                            alert('Validation Error: ' + JSON.stringify(err.errors));
                             throw new Error('Validation failed');
                         });
                     }
@@ -110,6 +110,7 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
+
 
         });
 

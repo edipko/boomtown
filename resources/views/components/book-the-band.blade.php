@@ -62,9 +62,11 @@
 
         grecaptcha.ready(function () {
             grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
+                console.log('Generated reCAPTCHA token:', token); // Debugging token
                 document.getElementById('recaptcha-token').value = token;
                 event.target.submit(); // Submit the form after setting the token
             });
         });
+
     });
 </script>
