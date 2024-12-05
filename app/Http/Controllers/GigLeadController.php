@@ -20,7 +20,7 @@ class GigLeadController extends Controller
             'email' => 'required|email',
             'telephone' => 'required|string|max:20',
             'event_information' => 'nullable|string',
-            'recaptchaToken' => 'required', // This must be provided
+            'recaptcha-token' => 'required', // This must be provided
         ]);
 
 
