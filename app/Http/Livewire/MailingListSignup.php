@@ -20,6 +20,7 @@ class MailingListSignup extends Component
 
     public function submit()
     {
+        logger('Livewire submit method triggered.'); // Logs to Laravel's log file
         $this->validate();
 
         // Optionally verify the reCAPTCHA score server-side if necessary
