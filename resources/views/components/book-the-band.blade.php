@@ -57,29 +57,29 @@
 
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
 <script>
-    document.getElementById('gigLeadForm').addEventListener('submit', function(event) {
+    document.getElementById('gigLeadForm').addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        grecaptcha.ready(function () {
-            grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
-                console.log('Generated reCAPTCHA token:', token); // Debugging token
+        try {
+            const token = await grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' });
+            console.log('Generated reCAPTCHA token:', token);
 
-                if (!token) {
-                    console.error('Failed to generate reCAPTCHA token.');
-                    alert('Error: Could not generate reCAPTCHA token. Please try again.');
-                    return;
-                }
+            if (!token) {
+                alert('Error: Could not generate reCAPTCHA token. Please try again.');
+                return;
+            }
 
-                // Set the token value in the hidden input
-                document.getElementById('recaptcha-token').value = token;
+            document.getElementById('recaptcha-token').value = token;
 
-                // Submit the form after setting the token
-                event.target.submit();
-            }).catch(function (error) {
-                console.error('reCAPTCHA Error:', error);
-                alert('Error generating reCAPTCHA. Please try again.');
-            });
-        });
+            // Debug the form data
+            const formData = new FormData(event.target);
+            console.log('Form Data:', Array.from(formData.entries()));
+
+            event.target.submit();
+        } catch (error) {
+            console.error('Error with reCAPTCHA:', error);
+            alert('Error generating reCAPTCHA. Please try again.');
+        }
     });
 
 </script>
