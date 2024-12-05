@@ -47,7 +47,6 @@
         <!-- Hidden reCAPTCHA Token Field -->
         <input type="hidden" id="recaptcha-token" name="recaptchaToken">
 
-
         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
     </form>
 
@@ -82,6 +81,5 @@
             });
         });
     });
-
 
 </script>
