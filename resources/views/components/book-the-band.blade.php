@@ -52,3 +52,21 @@
         <a href="{{ route('press-kit') }}" class="text-blue-400 underline">View Digital Press Kit</a>
     </div>
 </section>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
+<script>
+    document.getElementById('gigLeadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        grecaptcha.ready(function () {
+            grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
+                // Attach the token to the hidden input field
+                document.getElementById('recaptcha-token').value = token;
+
+                // Submit the form
+                event.target.submit();
+            });
+        });
+    });
+</script>
+
