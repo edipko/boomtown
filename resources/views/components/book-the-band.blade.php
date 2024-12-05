@@ -58,14 +58,15 @@
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.recaptcha_site_key') }}"></script>
 <script>
     document.getElementById('gigLeadForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Stop the default form submission behavior
+        event.preventDefault(); // Prevent default form submission
 
-        grecaptcha.ready(function () {
-            grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' }).then(function (token) {
+        grecaptcha.ready(async function () {
+            try {
+                // Generate the reCAPTCHA token
+                const token = await grecaptcha.execute('{{ config('app.recaptcha_site_key') }}', { action: 'submit' });
                 console.log('Generated reCAPTCHA token:', token);
 
                 if (!token) {
-                    console.error('Failed to generate reCAPTCHA token.');
                     alert('Error: Could not generate reCAPTCHA token. Please try again.');
                     return;
                 }
@@ -73,40 +74,39 @@
                 // Set the token in the hidden input field
                 document.getElementById('recaptcha-token').value = token;
 
-                // Debug the form data
+                // Use the fetch API for form submission
                 const formData = new FormData(document.getElementById('gigLeadForm'));
-                console.log('Form Data:', Array.from(formData.entries()));
 
-                // Manually submit the form via fetch API
-                fetch("{{ route('giglead.store') }}", {
+                // Debug the form data before sending
+                console.log('Form Data Before Submission:', Array.from(formData.entries()));
+
+                const response = await fetch("{{ route('giglead.store') }}", {
                     method: "POST",
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Accept': 'application/json',
                     },
                     body: formData,
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(err => {
-                                console.error('Validation Errors:', err.errors);
-                                alert('Validation Error: ' + JSON.stringify(err.errors));
-                                throw new Error('Validation failed');
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('gigLeadForm').reset();
-                            alert('Your booking request has been received!');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }).catch(function (error) {
-                console.error('reCAPTCHA Error:', error);
-                alert('Error generating reCAPTCHA. Please try again.');
-            });
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Validation Errors:', errorData.errors);
+                    alert('Validation Error: ' + JSON.stringify(errorData.errors));
+                    return;
+                }
+
+                const responseData = await response.json();
+                console.log('Server Response:', responseData);
+
+                if (responseData.success) {
+                    alert('Your booking request has been received!');
+                    document.getElementById('gigLeadForm').reset();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the form. Please try again.');
+            }
         });
     });
 
