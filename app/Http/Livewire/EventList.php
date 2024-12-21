@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Event;
+use Carbon\Carbon;
 
 class EventList extends Component
 {
@@ -14,12 +15,21 @@ class EventList extends Component
 
     public function loadEvents()
     {
+        $now = Carbon::now();
+        $yesterday = Carbon::yesterday();
+
         // Count total upcoming events for "Show More" button
-        $this->totalEvents = Event::where('date', '>=', now())->count();
+        $this->totalEvents = Event::whereBetween('date', [
+            $yesterday->startOfDay(),
+            $now->endOfDay()
+        ])->count();
 
         // Fetch only the number of events we want to display
         $this->events = Event::with('venue')
-            ->where('date', '>=', now())
+            ->whereBetween('date', [
+                $yesterday->startOfDay(),
+                $now->endOfDay()
+            ])
             ->orderBy('date', 'asc')
             ->take($this->displayCount)
             ->get();
