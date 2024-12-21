@@ -9,22 +9,22 @@ use Carbon\Carbon;
 class EventList extends Component
 {
     public $events;
-    public $displayCount = 4; // Initial number of events to display
+    public $displayCount = 5; // Initial number of events to display
     public $increment = 2; // Number of events to load each time "Show More" is clicked
-    public $totalEvents; // Total number of upcoming events
+    public $totalEvents; // Total number of events in the date range
 
     public function loadEvents()
     {
         $now = Carbon::now();
         $yesterday = Carbon::yesterday();
 
-        // Count total upcoming events for "Show More" button
+        // Count total events for "Show More" button
         $this->totalEvents = Event::whereBetween('date', [
             $yesterday->startOfDay(),
             $now->endOfDay()
         ])->count();
 
-        // Fetch only the number of events we want to display
+        // Fetch events within the range, limited by the display count
         $this->events = Event::with('venue')
             ->whereBetween('date', [
                 $yesterday->startOfDay(),
@@ -38,7 +38,7 @@ class EventList extends Component
     public function showMore()
     {
         $this->displayCount += $this->increment;
-        $this->loadEvents(); // Refresh events with the new display count
+        $this->loadEvents(); // Refresh events with the updated display count
     }
 
     public function mount()
