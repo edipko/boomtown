@@ -9,11 +9,17 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GigLeadController;
 use App\Http\Controllers\GigLeadAdminController;
+use App\Http\Controllers\VerificationController;
+
+Route::get('/verify', [VerificationController::class, 'verify']);
+Route::post('/create-verification', [VerificationController::class, 'store']);
+
 
 Route::middleware('auth')->group(function () {
     Route::resource('venues', VenueController::class);
     Route::resource('events', EventController::class);
 });
+
 
 Route::get('/', [PublicPageController::class, 'index'])->name('public.home');
 
