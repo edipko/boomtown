@@ -54,7 +54,6 @@
 
 
             <!-- Book the Band Section -->
-            <!--<x-book-the-band />-->
             @livewire('gig-lead-form')
 
 
