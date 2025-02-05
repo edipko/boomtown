@@ -54,8 +54,8 @@ class GigLeadForm extends Component
                 ],
             ],
             'from' => [
-                'email' => env('MAIL_FROM_ADDRESS', 'shout@boomtownpa.com'),
-                'name' => env('MAIL_FROM_NAME', 'Boomtown Band'),
+                'email' => 'verify@boomtownpa.com',
+                'name' => 'Boomtown Band'
             ],
             'content' => [
                 [
