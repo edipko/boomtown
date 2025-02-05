@@ -17,6 +17,7 @@ class GigLeadForm extends Component
     public $verification_code;
     public $isVerified = false;
     public $codeSent = false;
+    public $verificationSent = false;
 
     public function sendVerificationCode()
     {
@@ -33,6 +34,7 @@ class GigLeadForm extends Component
         $this->sendEmailUsingSendGrid($this->email, 'Verify Your Email', "Your verification code is: $verificationCode");
 
         $this->codeSent = true;
+        $this->verificationSent = true;
         session()->flash('message', 'Verification code sent! Check your email.');
     }
 
@@ -52,7 +54,7 @@ class GigLeadForm extends Component
                 ],
             ],
             'from' => [
-                'email' => env('MAIL_FROM_ADDRESS', 'verify@boomtownpa.com'),
+                'email' => env('MAIL_FROM_ADDRESS', 'shout@boomtownpa.com'),
                 'name' => env('MAIL_FROM_NAME', 'Boomtown Band'),
             ],
             'content' => [
@@ -76,9 +78,9 @@ class GigLeadForm extends Component
         if ($cachedCode && $cachedCode == $this->verification_code) {
             Cache::forget("verification_code_{$this->email}");
             $this->isVerified = true;
-            session()->flash('message', 'Email verified! You may now submit the form.');
+            session()->flash('message', 'Email verified! You may now complete the form.');
         } else {
-            session()->flash('error', 'Invalid verification code.');
+            session()->flash('error', 'Invalid verification code. Please try again.');
         }
     }
 
@@ -111,7 +113,7 @@ class GigLeadForm extends Component
     {
         return view('livewire.gig-lead-form', [
             'codeSent' => $this->codeSent,
+            'isVerified' => $this->isVerified
         ]);
     }
 }
-
