@@ -13,8 +13,6 @@ use App\Http\Controllers\VerificationController;
 
 use App\Http\Livewire\GigLeadForm;
 
-Route::get('/book-the-band', GigLeadForm::class);
-
 
 Route::get('/verify', [VerificationController::class, 'verify']);
 Route::post('/create-verification', [VerificationController::class, 'store']);
