@@ -41,10 +41,23 @@ class VerificationController extends Controller
         try {
             Log::info('Subscribing user to mailing list.', ['email' => $email]);
 
-            // Simulated mailing list subscription API call
-            // Example: Mailchimp::addSubscriber($email, $formData);
+            // Ensure the user's name is included from form data
+            $name = isset($formData['name']) ? $formData['name'] : 'Unknown';
 
-            Log::info('User successfully added to mailing list.', ['email' => $email]);
+            // Check if the email already exists in the mailing list
+            $existingSubscriber = \App\Models\MailingList::where('email', $email)->first();
+
+            if ($existingSubscriber) {
+                Log::info('User is already subscribed to the mailing list.', ['email' => $email]);
+            } else {
+                // Create a new mailing list entry
+                \App\Models\MailingList::create([
+                    'name' => $name,
+                    'email' => $email
+                ]);
+
+                Log::info('User successfully added to the mailing list.', ['email' => $email]);
+            }
         } catch (\Exception $e) {
             Log::error('Failed to subscribe user to mailing list.', [
                 'error_message' => $e->getMessage(),
@@ -52,6 +65,7 @@ class VerificationController extends Controller
             ]);
         }
     }
+
 
     public function store(Request $request)
     {
