@@ -11,6 +11,8 @@ use App\Http\Controllers\GigLeadController;
 use App\Http\Controllers\GigLeadAdminController;
 use App\Http\Controllers\VerificationController;
 
+
+
 Route::get('/verify', [VerificationController::class, 'verify']);
 Route::post('/create-verification', [VerificationController::class, 'store']);
 
@@ -57,6 +59,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::post('/gig-lead', [GigLeadController::class, 'store'])->name('giglead.store');
+Route::post('/send-verification-code', [GigLeadController::class, 'sendVerificationCode']);
+Route::post('/verify-code', [GigLeadController::class, 'verifyCode']);
+Route::post('/giglead/store', [GigLeadController::class, 'store'])->name('giglead.store');
+
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('admin/gigleads', [GigLeadAdminController::class, 'index'])->name('gigleads.index');
     Route::get('admin/gigleads/{gigLead}/edit', [GigLeadAdminController::class, 'edit'])->name('gigleads.edit');
