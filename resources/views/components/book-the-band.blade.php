@@ -11,6 +11,7 @@
                    class="mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600"
                    placeholder="Your Name">
         </div>
+
         <div class="mb-4">
             <label for="email" class="block text-sm font-medium text-white">Email</label>
             <div class="flex">
@@ -55,39 +56,71 @@
 </section>
 
 <script>
-    document.getElementById('verifyEmailButton').addEventListener('click', function () {
-        let email = document.getElementById('email').value;
+    document.addEventListener("DOMContentLoaded", function () {
+        let verifyButton = document.getElementById('verifyEmailButton');
+        let emailInput = document.getElementById('email');
+        let verificationSection = document.getElementById('verification-section');
+        let verificationInput = document.getElementById('verification_code');
+        let submitVerificationButton = document.getElementById('submitVerificationCode');
+        let submitButton = document.getElementById('submitButton');
 
-        fetch('/send-verification-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-            body: JSON.stringify({ email })
-        }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('verification-section').classList.remove('hidden');
-                } else {
-                    alert(data.message);
-                }
-            });
-    });
+        // Send verification code when clicking "Verify"
+        verifyButton.addEventListener('click', function () {
+            let email = emailInput.value.trim();
 
-    document.getElementById('submitVerificationCode').addEventListener('click', function () {
-        let email = document.getElementById('email').value;
-        let code = document.getElementById('verification_code').value;
+            if (!email) {
+                alert('Please enter an email address first.');
+                return;
+            }
 
-        fetch('/verify-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-            body: JSON.stringify({ email, code })
-        }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('submitButton').disabled = false;
-                    alert("Verification successful! You may now submit the form.");
-                } else {
-                    alert(data.message);
-                }
-            });
+            fetch('/send-verification-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Verification code sent! Check your email.');
+                        verificationSection.classList.remove('hidden');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Verify the code and enable the submit button
+        submitVerificationButton.addEventListener('click', function () {
+            let email = emailInput.value.trim();
+            let code = verificationInput.value.trim();
+
+            if (!email || !code) {
+                alert('Please enter the verification code.');
+                return;
+            }
+
+            fetch('/verify-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ email: email, code: code })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Verification successful! You may now submit the form.');
+                        submitButton.disabled = false; // Enable submit button
+                    } else {
+                        alert('Invalid verification code. Please try again.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     });
 </script>
