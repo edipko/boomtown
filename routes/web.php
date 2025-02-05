@@ -11,6 +11,9 @@ use App\Http\Controllers\GigLeadController;
 use App\Http\Controllers\GigLeadAdminController;
 use App\Http\Controllers\VerificationController;
 
+use App\Http\Livewire\GigLeadForm;
+
+Route::get('/book-the-band', GigLeadForm::class);
 
 
 Route::get('/verify', [VerificationController::class, 'verify']);
