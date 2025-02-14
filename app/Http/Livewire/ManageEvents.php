@@ -20,18 +20,19 @@ class ManageEvents extends Component
     {
         $today = Carbon::today()->toDateString();
 
-        // Fetch upcoming events (today and future)
+        // Upcoming Events (today and future)
         $this->upcomingEvents = Event::with('venue')
             ->whereDate('date', '>=', $today)
             ->orderBy('date', 'asc')
             ->get();
 
-        // Fetch past events (sorted descending)
+        // Past Events (before today)
         $this->pastEvents = Event::with('venue')
             ->whereDate('date', '<', $today)
             ->orderBy('date', 'desc')
             ->get();
     }
+
 
     public function deleteEvent($eventId)
     {

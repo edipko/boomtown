@@ -28,6 +28,8 @@ class EventList extends Component
             ->orderBy('date', 'asc')
             ->take($this->displayCount)
             ->get();
+
+
     }
 
 
