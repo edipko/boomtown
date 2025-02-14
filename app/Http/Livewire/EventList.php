@@ -15,12 +15,11 @@ class EventList extends Component
 
     public function loadEvents()
     {
-        $timezone = config('app.timezone'); // Get app's configured timezone
-        $now = Carbon::now($timezone);
+        $timezone = config('app.timezone'); // Ensure consistency with Laravel's timezone setting
         $yesterdayStart = Carbon::yesterday($timezone)->startOfDay();
         $todayEnd = Carbon::today($timezone)->endOfDay();
 
-        // Count total events from yesterday's start to today's end
+        // Count total events from yesterday to today
         $this->totalEvents = Event::where('date', '>=', $yesterdayStart)
             ->where('date', '<=', $todayEnd)
             ->count();
@@ -33,6 +32,7 @@ class EventList extends Component
             ->take($this->displayCount)
             ->get();
     }
+
 
     public function showMore()
     {
