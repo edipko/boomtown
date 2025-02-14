@@ -8,11 +8,18 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    public function index()
+    /*public function index()
     {
         $events = Event::with('venue')->get();
         return view('events.index', compact('events'));
     }
+*/
+
+    public function index()
+    {
+        return view('events.index'); // No need to pass $events, Livewire will handle it
+    }
+
 
     public function create()
     {

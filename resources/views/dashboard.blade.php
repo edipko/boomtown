@@ -16,9 +16,7 @@
                 <a href="{{ route('venues.index') }}" class="list-group-item list-group-item-action">
                     Manage Venues
                 </a>
-                <a href="{{ route('events.index') }}" class="list-group-item list-group-item-action">
-                    Manage Events
-                </a>
+                @livewire('manage-events')
             </div>
         </div>
 
