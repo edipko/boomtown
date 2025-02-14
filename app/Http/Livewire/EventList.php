@@ -17,16 +17,18 @@ class EventList extends Component
     {
         $timezone = config('app.timezone'); // Get app's configured timezone
         $now = Carbon::now($timezone);
-        $yesterday = Carbon::yesterday($timezone)->startOfDay();
-        $endOfToday = $now->endOfDay(); // Ensure events until the end of today are included
+        $yesterdayStart = Carbon::yesterday($timezone)->startOfDay();
+        $todayEnd = Carbon::today($timezone)->endOfDay();
 
-        // Count total events from yesterday to end of today
-        $this->totalEvents = Event::whereBetween('date', [$yesterday, $endOfToday])
+        // Count total events from yesterday's start to today's end
+        $this->totalEvents = Event::where('date', '>=', $yesterdayStart)
+            ->where('date', '<=', $todayEnd)
             ->count();
 
         // Fetch only the number of events we want to display
         $this->events = Event::with('venue')
-            ->whereBetween('date', [$yesterday, $endOfToday])
+            ->where('date', '>=', $yesterdayStart)
+            ->where('date', '<=', $todayEnd)
             ->orderBy('date', 'asc')
             ->take($this->displayCount)
             ->get();
@@ -48,6 +50,7 @@ class EventList extends Component
         return view('livewire.event-list');
     }
 }
+
 
 ?>
 
