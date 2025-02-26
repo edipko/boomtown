@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <!-- Popup for Event List -->
+    <!-- Event List Popup -->
     <div id="eventListPopup" class="hidden fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
         <div class="bg-gray-900 text-white rounded-lg p-6 shadow-lg w-full max-w-3xl min-h-[50vh] max-h-[85vh] overflow-auto">
             <h2 class="text-xl font-semibold mb-4 text-white">Event List</h2>
@@ -36,6 +36,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Upcoming Events (Main List Display) -->
+    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-semibold mb-4 text-green-700">Upcoming Events</h2>
+
+        <table class="w-full border-collapse">
+            <thead>
+            <tr class="bg-gray-200 text-gray-700 text-sm uppercase">
+                <th class="border p-3 text-left">Event Name</th>
+                <th class="border p-3 text-left">Date</th>
+                <th class="border p-3 text-left">Time</th>
+                <th class="border p-3 text-left">Venue</th>
+                <th class="border p-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($upcomingEvents as $event)
+                <tr class="border-b bg-white hover:bg-gray-100 transition">
+                    <td class="p-3">{{ $event->name }}</td>
+                    <td class="p-3">{{ \Carbon\Carbon::parse($event->date)->format('M d, Y') }}</td>
+                    <td class="p-3">{{ \Carbon\Carbon::parse($event->time)->format('g:i A') }}</td>
+                    <td class="p-3">{{ $event->venue->name }}</td>
+                    <td class="p-3 text-center">
+                        <a href="{{ route('events.edit', $event->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                        |
+                        <button wire:click="deleteEvent({{ $event->id }})"
+                                class="text-red-600 hover:underline">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center p-3 text-gray-500">No upcoming events.</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <!-- JavaScript for Popup & Copy Functionality -->
@@ -44,21 +84,18 @@
         let events = @json($upcomingEvents);
         let eventText = "";
 
-        if (events.length === 0) {
+        if (!events || events.length === 0) {
             eventText = "No upcoming events.";
         } else {
             events.forEach(event => {
-                let eventDate = new Date(event.date);
-                let formattedDate = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                let formattedTime = new Date("1970-01-01T" + event.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+                let formattedDate = new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                let formattedTime = event.time ? new Date("1970-01-01T" + event.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : 'N/A';
 
-                eventText += formattedDate + " - " + formattedTime + " - " + event.venue.name + "\n";
+                eventText += `${formattedDate} - ${formattedTime} - ${event.venue ? event.venue.name : 'Unknown Venue'}\n`;
             });
         }
 
-        // Set the text in the textarea
-        let eventTextArea = document.getElementById("eventListText");
-        eventTextArea.value = eventText;
+        document.getElementById("eventListText").value = eventText;
         document.getElementById("eventListPopup").classList.remove("hidden");
     }
 
