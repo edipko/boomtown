@@ -2,28 +2,32 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Manage Events</h1>
         <div class="flex space-x-4">
+            <!-- Add New Event Button -->
             <a href="{{ route('events.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 + Add New Event
             </a>
 
+            <!-- Copy Event List Button (Now Visible) -->
             <button onclick="showEventList()"
-                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    class="bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded">
                 📋 Copy Event List
             </button>
         </div>
     </div>
 
     <!-- Popup for Event List -->
-    <div id="eventListPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-        <div class="bg-white rounded-lg p-6 shadow-lg w-full max-w-2xl lg:max-w-4xl md:max-w-3xl h-auto max-h-[80vh] overflow-auto">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">Event List</h2>
-            <textarea id="eventListText" class="w-full h-64 p-3 border rounded text-gray-800"></textarea>
+    <div id="eventListPopup" class="hidden fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
+        <div class="bg-gray-900 text-white rounded-lg p-6 shadow-lg w-full max-w-3xl h-auto max-h-[80vh] overflow-auto">
+            <h2 class="text-xl font-semibold mb-4 text-white">Event List</h2>
+            <textarea id="eventListText" class="w-full h-48 p-3 border rounded text-black"></textarea>
             <div class="flex justify-end mt-4 space-x-4">
+                <!-- Copy to Clipboard Button (Now Visible) -->
                 <button onclick="copyEventList()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                     Copy to Clipboard
                 </button>
-                <button onclick="closePopup()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                <!-- Close Button (Now Visible) -->
+                <button onclick="closePopup()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
                     Close
                 </button>
             </div>
