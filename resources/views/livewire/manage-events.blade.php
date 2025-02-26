@@ -22,7 +22,7 @@
             <h2 class="text-xl font-semibold mb-4 text-white">Event List</h2>
 
             <!-- Auto-Adjusting Text Area -->
-            <textarea id="eventListText" class="w-full h-72 lg:h-96 p-3 border rounded text-black resize-none"></textarea>
+            <textarea id="eventListText" class="w-full h-72 lg:h-150 p-3 border rounded text-black resize-none"></textarea>
 
             <div class="flex justify-end mt-4 space-x-4">
                 <!-- Copy to Clipboard Button -->
