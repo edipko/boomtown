@@ -16,9 +16,9 @@
 
     <!-- Popup for Event List -->
     <div id="eventListPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-        <div class="bg-white rounded-lg p-6 w-2/3 max-w-lg shadow-lg">
+        <div class="bg-white rounded-lg p-6 shadow-lg w-full max-w-2xl lg:max-w-4xl md:max-w-3xl h-auto max-h-[80vh] overflow-auto">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">Event List</h2>
-            <textarea id="eventListText" class="w-full h-48 p-3 border rounded text-gray-800"></textarea>
+            <textarea id="eventListText" class="w-full h-64 p-3 border rounded text-gray-800"></textarea>
             <div class="flex justify-end mt-4 space-x-4">
                 <button onclick="copyEventList()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                     Copy to Clipboard
@@ -69,44 +69,6 @@
         </table>
     </div>
 
-    <!-- Past Events -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold mb-4 text-gray-700">Past Events</h2>
-
-        <table class="w-full border-collapse">
-            <thead>
-            <tr class="bg-gray-200 text-gray-700 text-sm uppercase">
-                <th class="border p-3 text-left">Event Name</th>
-                <th class="border p-3 text-left">Date</th>
-                <th class="border p-3 text-left">Time</th>
-                <th class="border p-3 text-left">Venue</th>
-                <th class="border p-3 text-center">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($pastEvents as $event)
-                <tr class="border-b bg-gray-50 hover:bg-gray-200 transition">
-                    <td class="p-3 text-gray-500">{{ $event->name }}</td>
-                    <td class="p-3 text-gray-500">{{ \Carbon\Carbon::parse($event->date)->format('M d, Y') }}</td>
-                    <td class="p-3 text-gray-500">{{ \Carbon\Carbon::parse($event->time)->format('g:i A') }}</td>
-                    <td class="p-3 text-gray-500">{{ $event->venue->name }}</td>
-                    <td class="p-3 text-center">
-                        <a href="{{ route('events.edit', $event->id) }}" class="text-blue-600 hover:underline">Edit</a>
-                        |
-                        <button wire:click="deleteEvent({{ $event->id }})"
-                                class="text-red-600 hover:underline">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="text-center p-3 text-gray-500">No past events.</td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
-    </div>
 </div>
 
 <!-- JavaScript for Popup & Copy Functionality -->
@@ -119,10 +81,13 @@
             let eventDate = new Date(event.date);
             let formattedDate = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             let formattedTime = new Date("1970-01-01T" + event.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-            eventText += `${formattedDate} - ${formattedTime} - ${event.venue.name}\\n`;
+
+            eventText += formattedDate + " - " + formattedTime + " - " + event.venue.name + "\\n";
         });
 
-        document.getElementById("eventListText").value = eventText;
+        // Set the text in the textarea
+        let eventTextArea = document.getElementById("eventListText");
+        eventTextArea.value = eventText.replace(/\\n/g, '\n'); // Ensure line breaks work properly
         document.getElementById("eventListPopup").classList.remove("hidden");
     }
 
