@@ -1,5 +1,11 @@
 <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Events</h1>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Manage Events</h1>
+        <a href="{{ route('events.create') }}"
+           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            + Add New Event
+        </a>
+    </div>
 
     <!-- Upcoming Events -->
     <div class="bg-white shadow-md rounded-lg p-6 mb-8">
