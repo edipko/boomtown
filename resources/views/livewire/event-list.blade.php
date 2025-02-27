@@ -8,18 +8,23 @@
             @foreach($events as $event)
                 <div class="relative">
                     <div class="flex items-center bg-gray-900 bg-opacity-80 rounded-lg p-2 shadow-md border-2 border-black relative">
-                        <div class="flex-shrink-0 w-20 h-20 border-2 border-blue-300 rounded-full flex flex-col items-center justify-center text-center text-blue-300 font-bold">
-                            <span class="text-sm">{{ \Carbon\Carbon::parse($event->date)->format('M') }}</span>
-                            <span class="text-2xl">{{ \Carbon\Carbon::parse($event->date)->format('d') }}</span>
-                            <span class="text-sm">{{ \Carbon\Carbon::parse($event->date)->format('D') }}</span>
 
-                            <!-- 📅 Add to Calendar Link Below Date -->
-                            <a href="#" onclick="addToCalendar(event, '{{ $event->name }}', '{{ $event->venue->name }}', '{{ $event->date }}', '{{ $event->time }}')" class="text-blue-400 hover:text-blue-300 text-sm mt-2">
+                        <!-- DATE CIRCLE -->
+                        <div class="flex flex-col items-center">
+                            <div class="flex-shrink-0 w-20 h-20 border-2 border-blue-300 rounded-full flex flex-col items-center justify-center text-center text-blue-300 font-bold">
+                                <span class="text-sm">{{ \Carbon\Carbon::parse($event->date)->format('M') }}</span>
+                                <span class="text-2xl">{{ \Carbon\Carbon::parse($event->date)->format('d') }}</span>
+                                <span class="text-sm">{{ \Carbon\Carbon::parse($event->date)->format('D') }}</span>
+                            </div>
+
+                            <!-- 📅 Add to Calendar Link BELOW the Circle -->
+                            <a href="#" onclick="addToCalendar(event, '{{ $event->name }}', '{{ $event->venue->name }}', '{{ $event->date }}', '{{ $event->time }}')"
+                               class="text-blue-400 hover:text-blue-300 text-sm mt-2">
                                 📅 Add
                             </a>
                         </div>
 
-                        <!-- Event Details -->
+                        <!-- EVENT DETAILS -->
                         <div class="ml-3 space-y-0.5">
                             <span class="text-lg font-bold text-blue-300">
                                 {{ $event->venue->name }}
