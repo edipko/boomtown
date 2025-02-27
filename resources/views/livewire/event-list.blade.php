@@ -83,15 +83,22 @@ END:VCALENDAR`;
         let blob = new Blob([icsContent], { type: 'text/calendar' });
         let icsUrl = URL.createObjectURL(blob);
 
-        // Display calendar options - NOW WITH HIGHER Z-INDEX
+        // Remove any existing popup before adding a new one
+        let existingPopup = document.getElementById("calendarPopup");
+        if (existingPopup) {
+            existingPopup.remove();
+        }
+
+        // Create popup outside of Livewire scope in <body>
         let popup = document.createElement('div');
+        popup.id = "calendarPopup";
         popup.innerHTML = `
-            <div class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[9999]">
-                <div class="bg-gray-900 text-white rounded-lg p-6 shadow-lg w-full max-w-md text-center relative z-[99999]">
-                    <h2 class="text-xl font-semibold mb-4">Add to Calendar</h2>
-                    <p><a href="${googleCalendarUrl}" target="_blank" class="text-blue-400 hover:underline">📅 Google Calendar</a></p>
-                    <p><a href="${icsUrl}" download="${title.replace(/\s+/g, '_')}.ics" class="text-blue-400 hover:underline">📅 Download ICS</a></p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Close</button>
+            <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 99999;">
+                <div style="background: #1a202c; color: white; padding: 20px; border-radius: 10px; text-align: center; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 15px;">Add to Calendar</h2>
+                    <p><a href="${googleCalendarUrl}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 1.2rem;">📅 Google Calendar</a></p>
+                    <p><a href="${icsUrl}" download="${title.replace(/\s+/g, '_')}.ics" style="color: #3b82f6; text-decoration: none; font-size: 1.2rem;">📅 Download ICS</a></p>
+                    <button onclick="document.getElementById('calendarPopup').remove()" style="margin-top: 15px; background: #dc2626; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">Close</button>
                 </div>
             </div>
         `;
@@ -99,4 +106,5 @@ END:VCALENDAR`;
         document.body.appendChild(popup);
     }
 </script>
+
 
