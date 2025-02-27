@@ -83,17 +83,20 @@ END:VCALENDAR`;
         let blob = new Blob([icsContent], { type: 'text/calendar' });
         let icsUrl = URL.createObjectURL(blob);
 
-        // Display calendar options
+        // Display calendar options - NOW WITH HIGHER Z-INDEX
         let popup = document.createElement('div');
-        popup.innerHTML = `<div class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
-            <div class="bg-gray-900 text-white rounded-lg p-6 shadow-lg w-full max-w-md text-center">
-                <h2 class="text-xl font-semibold mb-4">Add to Calendar</h2>
-                <p><a href="${googleCalendarUrl}" target="_blank" class="text-blue-400 hover:underline">📅 Google Calendar</a></p>
-                <p><a href="${icsUrl}" download="${title.replace(/\s+/g, '_')}.ics" class="text-blue-400 hover:underline">📅 Download ICS</a></p>
-                <button onclick="this.parentElement.parentElement.remove()" class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Close</button>
+        popup.innerHTML = `
+            <div class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[9999]">
+                <div class="bg-gray-900 text-white rounded-lg p-6 shadow-lg w-full max-w-md text-center relative z-[99999]">
+                    <h2 class="text-xl font-semibold mb-4">Add to Calendar</h2>
+                    <p><a href="${googleCalendarUrl}" target="_blank" class="text-blue-400 hover:underline">📅 Google Calendar</a></p>
+                    <p><a href="${icsUrl}" download="${title.replace(/\s+/g, '_')}.ics" class="text-blue-400 hover:underline">📅 Download ICS</a></p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Close</button>
+                </div>
             </div>
-        </div>`;
+        `;
 
         document.body.appendChild(popup);
     }
 </script>
+
