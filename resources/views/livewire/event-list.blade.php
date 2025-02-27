@@ -12,38 +12,26 @@
                             <span class="text-sm">{{ \Carbon\Carbon::parse($event->date)->format('M') }}</span>
                             <span class="text-2xl">{{ \Carbon\Carbon::parse($event->date)->format('d') }}</span>
                             <span class="text-sm">{{ \Carbon\Carbon::parse($event->date)->format('D') }}</span>
+
+                            <!-- 📅 Add to Calendar Link Below Date -->
+                            <a href="#" onclick="addToCalendar(event, '{{ $event->name }}', '{{ $event->venue->name }}', '{{ $event->date }}', '{{ $event->time }}')" class="text-blue-400 hover:text-blue-300 text-sm mt-2">
+                                📅 Add
+                            </a>
                         </div>
 
-                        <!-- Event Details with Tooltip -->
+                        <!-- Event Details -->
                         <div class="ml-3 space-y-0.5">
-                            <div class="relative group" x-data="{ show: false }" @mouseenter="show = true" @mouseleave="show = false">
-                                <span class="text-lg font-bold text-blue-300 hover:text-blue-200 cursor-pointer">
-                                    {{ $event->venue->name }}
-                                </span>
-
-                                <div x-show="show" x-transition class="absolute left-0 mt-2 w-64 p-4 bg-gray-800 text-white rounded-lg shadow-lg z-50">
-                                    <h3 class="text-lg font-bold">{{ $event->venue->name }}</h3>
-                                    <p class="text-sm"><strong>Address:</strong> {{ $event->venue->address }}, {{ $event->venue->city }}, {{ $event->venue->state }} {{ $event->venue->zip }}</p>
-                                    <p class="text-sm"><strong>Telephone:</strong> {{ $event->venue->telephone }}</p>
-                                </div>
-                            </div>
-
+                            <span class="text-lg font-bold text-blue-300">
+                                {{ $event->venue->name }}
+                            </span>
                             <p class="text-blue-300 text-sm">{{ $event->venue->city }}, {{ $event->venue->state }}</p>
                             <p class="text-xl font-bold text-white">{{ $event->name }}</p>
-
                             <p class="text-sm text-gray-400 uppercase">
                                 SHOW TIME: <span class="text-blue-300">{{ \Carbon\Carbon::parse($event->time)->format('g:i A') }}</span>
                             </p>
                             <p class="text-sm text-gray-400 uppercase">
                                 COVER CHARGE:
                                 <span class="text-blue-300">{{ $event->admission_cost == 0 ? 'No Cover' : '$' . number_format($event->admission_cost, 2) }}</span>
-                            </p>
-
-                            <!-- 📅 Add to Calendar Button -->
-                            <p class="text-sm text-gray-400 mt-2">
-                                <a href="#" onclick="addToCalendar(event, '{{ $event->name }}', '{{ $event->venue->name }}', '{{ $event->date }}', '{{ $event->time }}')" class="text-blue-400 hover:underline">
-                                    📅 Add to Calendar
-                                </a>
                             </p>
                         </div>
                     </div>
@@ -56,7 +44,6 @@
                 Show More Events
             </button>
         @endif
-
     @endif
 </div>
 
@@ -92,16 +79,12 @@ END:VCALENDAR`;
         let icsUrl = URL.createObjectURL(blob);
 
         // Display calendar options
-        let calendarOptions = `
-            <p><a href="${googleCalendarUrl}" target="_blank" class="text-blue-400 hover:underline">📅 Add to Google Calendar</a></p>
-            <p><a href="${icsUrl}" download="${title.replace(/\s+/g, '_')}.ics" class="text-blue-400 hover:underline">📅 Download ICS (Outlook/Apple)</a></p>
-        `;
-
         let popup = document.createElement('div');
         popup.innerHTML = `<div class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
             <div class="bg-gray-900 text-white rounded-lg p-6 shadow-lg w-full max-w-md text-center">
                 <h2 class="text-xl font-semibold mb-4">Add to Calendar</h2>
-                ${calendarOptions}
+                <p><a href="${googleCalendarUrl}" target="_blank" class="text-blue-400 hover:underline">📅 Google Calendar</a></p>
+                <p><a href="${icsUrl}" download="${title.replace(/\s+/g, '_')}.ics" class="text-blue-400 hover:underline">📅 Download ICS</a></p>
                 <button onclick="this.parentElement.parentElement.remove()" class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Close</button>
             </div>
         </div>`;
