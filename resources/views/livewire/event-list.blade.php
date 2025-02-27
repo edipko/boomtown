@@ -66,13 +66,13 @@
         let description = "Join us for this event at " + location;
 
         // Generate Google Calendar Link
-        let googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedStart}/${formattedEnd}&location=${encodeURIComponent(location)}&details=${encodeURIComponent(description)}&sf=true&output=xml`;
+        let googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=Boomtown - ${encodeURIComponent(location)}&dates=${formattedStart}/${formattedEnd}&location=${encodeURIComponent(location)}&details=${encodeURIComponent(description)}&sf=true&output=xml`;
 
         // Generate .ICS file for Outlook/Apple Calendar
         let icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
-SUMMARY:${title}
+SUMMARY:Boomtown - ${location}
 LOCATION:${location}
 DTSTART:${formattedStart}
 DTEND:${formattedEnd}
