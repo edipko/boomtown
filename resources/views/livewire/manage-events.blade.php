@@ -76,6 +76,45 @@
         </table>
     </div>
 
+    <!-- Past Events -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Past Events</h2>
+
+        <table class="w-full border-collapse">
+            <thead>
+            <tr class="bg-gray-200 text-gray-700 text-sm uppercase">
+                <th class="border p-3 text-left">Event Name</th>
+                <th class="border p-3 text-left">Date</th>
+                <th class="border p-3 text-left">Time</th>
+                <th class="border p-3 text-left">Venue</th>
+                <th class="border p-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($pastEvents as $event)
+                <tr class="border-b bg-gray-50 hover:bg-gray-200 transition">
+                    <td class="p-3 text-gray-500">{{ $event->name }}</td>
+                    <td class="p-3 text-gray-500">{{ \Carbon\Carbon::parse($event->date)->format('M d, Y') }}</td>
+                    <td class="p-3 text-gray-500">{{ \Carbon\Carbon::parse($event->time)->format('g:i A') }}</td>
+                    <td class="p-3 text-gray-500">{{ $event->venue->name }}</td>
+                    <td class="p-3 text-center">
+                        <a href="{{ route('events.edit', $event->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                        |
+                        <button wire:click="deleteEvent({{ $event->id }})"
+                                class="text-red-600 hover:underline">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center p-3 text-gray-500">No past events.</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <!-- JavaScript for Popup & Copy Functionality -->
